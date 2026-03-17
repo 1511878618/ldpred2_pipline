@@ -146,11 +146,12 @@ step1_out="${output_dir}/ldpred2_grid.tsv.gz"
 run_step "LDpred2 weights" "$step1_out" \
   Rscript LDpred2AndLassosum2LDCaches_v1.R -o "$output_dir" -g "$gwas_file" -p "$LDCache"
 
+# Run step2; assign rsid
 step2_out="${output_dir}/ldpred2_grid_rsid.tsv.gz"
 run_step "Assign rsid" "$step2_out" \
   bash -c "
     zcat '$step1_out' \
-      | python KeyMapReplacer.py -p EUR_38.rsid -k 1 -r 1 \
+      | python KeyMapReplacer_v2.py -p EUR_38.rsid -k 1 -r 1 \
       | gzip -c > '$step2_out'
   "
 
